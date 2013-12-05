@@ -1,0 +1,38 @@
+.ubiq-select {
+    position: absolute;
+    /*bottom: 0;*/
+
+    z-index: 9999;
+}
+    .ubiq-select > a {
+        cursor: pointer;
+        border: 2px solid #444;
+        display: block;
+        background: #222 url('chrome-extension://__MSG_@@extension_id__/icon.png') center center no-repeat;
+        width: 19px;
+        height: 19px;
+    }
+
+    .ubiq-list {
+        display: none;
+        background: #444;
+        width: 100px;
+    }
+
+        .ubiq-list li {
+            padding: 8px 10px;
+        }
+
+        .ubiq-list li:hover {
+            background: #555;
+        }
+
+            .ubiq-list li a {
+                display: block;
+                cursor: pointer;
+                color: #f9f9f9;
+            }
+
+            .ubiq-list li a:hover {
+                text-decoration: none;
+            }
