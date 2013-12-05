@@ -8,6 +8,9 @@
     "permissions": [
         "contextMenus"
     ],
+     "web_accessible_resources": [
+        "icon.png"
+     ],
 
     "browser_action": {
         "default_icon": "icon.png"
@@ -17,7 +20,7 @@
     },
     "content_scripts": [{
         "matches": ["http://*/*", "https://*/*"],
-        "css": [],
+        "css": ["discover.css"],
         "js": ["discover.js"]
     }]
 }

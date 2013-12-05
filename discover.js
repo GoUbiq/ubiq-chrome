@@ -4,20 +4,35 @@ var UBIQ = {
     isFrameCrossOrigin: function (frame) {
         try {
             // try to access frame content
-            var doc = iframe.contentDocument || frame.contentWindow.document;
+            var doc = frame.contentDocument || frame.contentWindow.document;
             doc.body.innerHTML;
             return false;
         } catch(err){
-            // cross origin, do nothing
+            // cross origin
             return true;
         }
     },
 
+    addUbiqSelect: function (frame, beforeElem) {
+        var container = frame.createElement('div');
+        container.className = 'ubiq-select';
+        container.innerHTML = '<a href="#"></a>';
+
+        beforeElem.parentNode.insertBefore(container, beforeElem);
+    },
+
     markTag: function (frame, tagName) {
-        var tags = frame.getElementsByTagName(tagName);
+        var tags = frame.getElementsByTagName(tagName),
+            ubiq_select;
 
         for (var i = 0, l = tags.length; i < l; i++) {
             tags[i].style.border = this.markedElemBorder;
+
+            ubiq_select = tags[i].parentNode.getElementsByClassName('ubiq-select');
+
+            if (!ubiq_select.length) {
+                this.addUbiqSelect(frame, tags[i]);
+            }
         }
     },
 
