@@ -1,8 +1,6 @@
 var UBIQ = {
-
-    devices: [],
-    ubiqSelect: '',
-
+    ubiqSelectHtml: null,
+    
     isFrameCrossOrigin: function (frame) {
         try {
             // try to access frame content
@@ -21,13 +19,10 @@ var UBIQ = {
         switch (tagName) {
             case 'OBJECT':
                 return elem.getAttribute('data');
-                break;
             case 'EMBED':
                 return elem.getAttribute('src');
-                break;
             case 'VIDEO':
                 return elem.getAttribute('src');
-                break;
         }
     },
 
@@ -37,9 +32,12 @@ var UBIQ = {
         var elem = e.target,
             list;
 
+        e.preventDefault();
+
         if (elem.className === 'ubiq-device') {
+            list = elem.parentNode.parentNode;
+            
             var deviceID = e.target.getAttribute('data-device-id'),
-                list = elem.parentNode.parentNode,
                 select = list.parentNode,
                 resourceURL = this.getResourceURL(select.nextSibling);
 
@@ -56,7 +54,9 @@ var UBIQ = {
         else if (elem.parentElement.className === 'ubiq-select') {
             list = elem.parentElement.getElementsByClassName('ubiq-list')[0];
 
-            if (list.style.display === 'none') {
+            console.log(list.style.display);
+            
+            if (!list.style.display || list.style.display === 'none') {
                 // show the list
                 list.style.display = 'inherit';
             }
@@ -67,25 +67,30 @@ var UBIQ = {
         }
     },
 
-    addUbiqSelect: function (devices, frame, element) {
+    addUbiqSelect: function (device_list, frame, element) {
         var container = frame.createElement('div');
         container.className = 'ubiq-select';
 
-        var container_html = '<a href="#"></a><ul class="ubiq-list">';
+        if (!this.ubiqSelectHtml) {
+            var container_html = '<a href="#"></a><ul class="ubiq-list">';
 
-        for (var i = 0, l = devices.length; i < l; i++) {
-            container_html += '<li><a href="#" class="ubiq-device" data-device-id="' + devices[i].id + '">' + devices[i].name + '</a></li>';
+            for (var i = 0, l = device_list.length; i < l; i++) {
+                container_html += '<li><a href="#" class="ubiq-device" data-device-id="' + 
+                    device_list[i].device + '">' + device_list[i].device + '</a></li>';
+            }
+
+            container_html += '</ul>';
+            
+            this.ubiqSelectHtml = container_html;
         }
-
-        container_html += '</ul>';
-        container.innerHTML = container_html;
-
+        
+        container.innerHTML = this.ubiqSelectHtml;
         container.addEventListener('click', this.handleSelectClick.bind(this));
 
         element.parentNode.insertBefore(container, element);
     },
 
-    markElement: function (frame, tagName) {
+    markElement: function (device_list, frame, tagName) {
         var tags = frame.getElementsByTagName(tagName),
             ubiq_select;
 
@@ -93,53 +98,47 @@ var UBIQ = {
             ubiq_select = tags[i].parentNode.getElementsByClassName('ubiq-select');
 
             if (!ubiq_select.length) {
-                this.addUbiqSelect(this.devices, frame, tags[i]);
+                this.addUbiqSelect(device_list, frame, tags[i]);
             }
         }
     },
 
-    markElements: function (frame, tagNames) {
+    markElements: function (device_list, frame, tagNames) {
         if (tagNames instanceof Array) {
             for (var i = 0, l = tagNames.length; i < l; i++) {
-                this.markElement(frame, tagNames[i]);
+                this.markElement(device_list, frame, tagNames[i]);
             }
         }
         else {
-            this.markElement(frame, tagNames);
+            this.markElement(device_list, frame, tagNames);
         }
     },
 
-    markContent: function () {
-        if (!this.devices) {
-            console.error('UBIQ: Devices have not been loaded. Unable to mark content.');
+    markContent: function (device_list) {
+        if (!device_list.length) {
+            console.error('ubiq-chrome: Unable to mark content. No devices specified.');
         }
 
         // mark elements in main page
-        this.markElements(document, ['embed', 'object', 'video']);
+        this.markElements(device_list, document, ['embed', 'object', 'video']);
 
         // mark elements inside any frames
         var frames = window.frames;
         for (var i = 0, l = frames.length; i < l; i++) {
             if (!this.isFrameCrossOrigin(frames[i]) && frames[i].document) {
-                this.markElements(frames[i].document, ['embed', 'object']);
+                this.markElements(device_list, frames[i].document, ['embed', 'object']);
             }
         }
-    },
-
-    handleLoadDevicesResponse: function (callback, response) {
-        this.devices = response.devices;
-        callback();
     },
 
     loadDevices: function (callback) {
         // request device list from server
         chrome.runtime.sendMessage({
             action: 'ubiq:device:list'
-        }, this.handleLoadDevicesResponse.bind(this, callback));
+        }, function (response) { callback(response.device_list); });
     }
 };
 
-UBIQ.loadDevices(function (devices) {
-    console.log(UBIQ.devices);
-    UBIQ.markContent();
+UBIQ.loadDevices(function (device_list) {
+    UBIQ.markContent(device_list);
 });

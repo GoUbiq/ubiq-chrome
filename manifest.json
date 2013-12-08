@@ -16,7 +16,7 @@
         "default_icon": "icon.png"
     },
     "background": {
-        "scripts": ["background.js"]
+        "scripts": ["socket.io.min.js", "background.js"]
     },
     "content_scripts": [{
         "matches": ["http://*/*", "https://*/*"],

@@ -1,7 +1,5 @@
 .ubiq-select {
     position: absolute;
-    /*bottom: 0;*/
-
     z-index: 9999;
 }
     .ubiq-select > a {
@@ -17,6 +15,7 @@
         display: none;
         background: #444;
         width: 100px;
+        list-style-type: none;
     }
 
         .ubiq-list li {
