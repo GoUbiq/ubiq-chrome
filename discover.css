@@ -16,6 +16,8 @@
         background: #444;
         width: 100px;
         list-style-type: none;
+        margin: 0;
+        padding: 0;
     }
 
         .ubiq-list li {
@@ -34,4 +36,6 @@
 
             .ubiq-list li a:hover {
                 text-decoration: none;
+                color: white;
+                border: none;
             }

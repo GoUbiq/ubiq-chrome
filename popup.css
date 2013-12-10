@@ -1,0 +1,19 @@
+body {
+    background: #333;
+}
+
+h3 {
+    color: #1B87AB;
+    padding-left: 25px;
+    background: #333 url('chrome-extension://__MSG_@@extension_id__/icon.png') center left no-repeat;
+    font-family: Arial, sans-serif;
+}
+
+input {
+    border: 1px solid #444;
+}
+
+button {
+
+}
+
