@@ -2,4 +2,4 @@ Ubiq Chrome Extension
 ===========
 
 
-Puts that, over there. 
+Put that over there. 
