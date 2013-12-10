@@ -43,8 +43,8 @@ chrome.runtime.onInstalled.addListener(function () {
         console.log('Connected to Ubiq. Registering device...');
 
         var device_data = {
-            user: 'timmy',
-            device: 'Frinkiac-7'
+            user: localStorage.getItem('ubiq:username'),
+            device: localStorage.getItem('ubiq:device-name')
         };
 
         socket.of('/register').emit('register', device_data);
