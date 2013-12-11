@@ -1,4 +1,4 @@
-var socket = io.connect('http://192.168.0.100:8000/');
+var socket = io.connect('http://192.168.0.102:8000/');
 console.log('Opened socket to Ubiq...');
 
 socket.on('error', function () {
@@ -54,7 +54,6 @@ chrome.runtime.onInstalled.addListener(function () {
         // TODO: Verify shit worked
         console.log(data + ' registered');
     });
-
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -84,3 +83,26 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     return true;
 });
 
+chrome.webRequest.onResponseStarted.addListener(function (details){
+    var headers = details.responseHeaders;
+
+    headers.forEach(function (header) {
+        if (header.name.toLowerCase() == 'content-type' && header.value == 'video/mp4') {
+            console.log('ubiq-chrome: intercepted request for mp4 at ' + details.url);
+        }
+    });
+},{
+    urls: [
+        '<all_urls>'
+    ],
+    types: [
+        'main_frame',
+        'sub_frame',
+        'stylesheet',
+        'script',
+        'image',
+        'object',
+        'xmlhttprequest',
+        'other'
+    ]
+}, ['responseHeaders']);

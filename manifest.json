@@ -6,7 +6,7 @@
     "version": "0.1",
 
     "permissions": [
-        "contextMenus"
+        "webRequest", "webRequestBlocking", "<all_urls>"
     ],
      "web_accessible_resources": [
         "icon.png"
