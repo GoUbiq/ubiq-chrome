@@ -1,0 +1,35 @@
+ideas
+=====
+
+Things that might happen
+
+
+####Swipe to transfer to device
+If content is being viewed on a mobile device, have different gestures set to transfer to different devices. 
+
+ex. Set swipe up to transfer to my TV; drag fingers apart to send to laptop and TV
+etc.
+
+
+####Time Triggers
+Start content playing at a predetermined time. 
+
+ex. Start playing porn at 11 PM on my 50" plasma
+
+####Information about currently playing video on separate device (ie. in sync with video time points)
+ex. I'm watching Into The Blue and I look at my phone to see what song is currently playing and that Paul Walker died yesterday
+
+ex. Advertisements
+
+ex. Controls for video
+
+####Put presentation on screen and control from mobile device
+Main screen content can be controlled by multiple devices. 
+
+####Hold mobile device in front of TV and video transfers
+See: Ironman
+
+####Transfer sections of app interface
+ex. If I'm sitting near my computer and I get an email on my phone. I click reply and the compose screen comes up. It's going to be a long reply because some serious shit is about to get said. I transfer that interface to my desktop and use my keyboard to write the email, but ultimately all input is piped back to the phone. 
+
+My initial thought is that this can be acheieved with JS, HTML, CSS, and an embedded browser window on the computer. 
